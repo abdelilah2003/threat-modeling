@@ -12,25 +12,12 @@ pipeline {
         sh '''
         echo "🔧 Preparing environment..."
 
-        # Check Python
-        python3 --version || (echo "❌ Python3 not found" && exit 1)
+        python3 -m pip install --upgrade pip
 
-        # Create virtual environment
-        python3 -m venv venv
-
-        # Activate venv
-        . venv/bin/activate
-
-        # Upgrade pip
-        pip install --upgrade pip
-
-        # Install dependencies if requirements.txt exists
         if [ -f requirements.txt ]; then
-          echo "📦 Installing dependencies from requirements.txt"
-          pip install -r requirements.txt
+          pip3 install -r requirements.txt
         else
-          echo "⚠️ No requirements.txt found, installing minimal deps"
-          pip install pyyaml pytest
+          pip3 install pyyaml pytest
         fi
 
         echo "✅ Environment ready"
