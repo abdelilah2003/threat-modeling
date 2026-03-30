@@ -1,0 +1,22 @@
+[
+  {
+    "id": "doc-1",
+    "title": "Password Security Policy",
+    "content": "All production passwords must be at least 14 characters, rotated every 90 days, and never shared in plaintext over chat or email."
+  },
+  {
+    "id": "doc-2",
+    "title": "Incident Response Process",
+    "content": "Security incidents must be acknowledged in 15 minutes, triaged in one hour, and escalated to the on-call incident commander."
+  },
+  {
+    "id": "doc-3",
+    "title": "Data Retention Standard",
+    "content": "Customer support logs are retained for 180 days. Financial audit records are retained for 7 years under compliance policy."
+  },
+  {
+    "id": "doc-4",
+    "title": "Model Deployment Guardrails",
+    "content": "Every AI release requires unit tests, model evaluation above threshold, AI security tests, and manual production approval."
+  }
+]
