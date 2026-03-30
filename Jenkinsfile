@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'python:3.10'
-      args '-u root'
-    }
-  }
+  agent any
 
   environment {
     PYTHONUNBUFFERED = '1'
@@ -25,7 +20,7 @@ pipeline {
 
     stage('Validate Manifest') {
       steps {
-        sh 'python scripts/validate_manifest.py'
+        sh 'python3 scripts/validate_manifest.py'
       }
     }
 
