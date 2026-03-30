@@ -1,0 +1,4 @@
+embedding_model: sentence-transformers/all-MiniLM-L6-v2
+use_faiss: true
+top_k: 2
+fallback_to_hash_embeddings: true

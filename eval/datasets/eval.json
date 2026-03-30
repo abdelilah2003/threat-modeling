@@ -1,0 +1,25 @@
+[
+  {
+    "id": "q1",
+    "question": "What is the password policy?",
+    "expected_contains": [
+      "14 characters",
+      "90 days"
+    ]
+  },
+  {
+    "id": "q2",
+    "question": "What are AI release guardrails?",
+    "expected_contains": [
+      "unit tests",
+      "manual production approval"
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "How long are support logs retained?",
+    "expected_contains": [
+      "180 days"
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+app:
+  name: enterprise-rag-api
+  version: 1.0.0
+  owner: ai-platform-team
+  description: Minimal production-structured enterprise RAG service
+
+ai:
+  type: llm_rag
+  uses_rag: true
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  retrieval:
+    config_path: rag/retrieval_config.yaml
+    knowledge_base_path: rag/knowledge_base/docs.json
+
+quality_gates:
+  unit_test_pass_rate_min: 1.0
+  eval_similarity_min: 0.03
+  eval_groundedness_min: 0.67
+  expected_contains_rate_min: 0.67
+  ai_security_pass_rate_min: 0.80
+  max_high_security_findings: 0
+
+scripts:
+  validate_manifest: scripts/validate_manifest.py
+  unit_tests: scripts/run_unit_tests.sh
+  security_checks: scripts/run_security_checks.sh
+  model_eval: scripts/run_model_eval.sh
+  ai_security_tests: scripts/run_ai_security_tests.sh
+  build_image: scripts/build_image.sh
+  deploy: scripts/deploy.sh
+  smoke_tests: scripts/run_smoke_tests.sh
+  integration_tests: scripts/run_integration_tests.sh
+
+deployment:
+  type: docker
+  dockerfile: deployment/docker/Dockerfile
+  image_name: enterprise-rag
+  staging_environment: staging
+  production_environment: production
+
+security_requirements:
+  dependency_scan: pip-audit
+  sast: bandit
+  secret_detection: required
+  prompt_injection_tests: required
+  malicious_input_tests: required

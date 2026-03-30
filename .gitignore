@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+.env/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Models (VERY IMPORTANT for your project)
+models/
+*.joblib
+*.pkl
+
+# IDE
+.vscode/
+.idea/
