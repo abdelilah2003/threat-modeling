@@ -6,6 +6,38 @@ pipeline {
   }
 
   stages {
+
+    stage('Prepare Environment') {
+      steps {
+        sh '''
+        echo "🔧 Preparing environment..."
+
+        # Check Python
+        python3 --version || (echo "❌ Python3 not found" && exit 1)
+
+        # Create virtual environment
+        python3 -m venv venv
+
+        # Activate venv
+        . venv/bin/activate
+
+        # Upgrade pip
+        pip install --upgrade pip
+
+        # Install dependencies if requirements.txt exists
+        if [ -f requirements.txt ]; then
+          echo "📦 Installing dependencies from requirements.txt"
+          pip install -r requirements.txt
+        else
+          echo "⚠️ No requirements.txt found, installing minimal deps"
+          pip install pyyaml pytest
+        fi
+
+        echo "✅ Environment ready"
+        '''
+      }
+    }
+
     stage('Load Manifest') {
       steps {
         script {
@@ -20,13 +52,19 @@ pipeline {
 
     stage('Validate Manifest') {
       steps {
-        sh 'python3 scripts/validate_manifest.py'
+        sh '''
+        . venv/bin/activate
+        python scripts/validate_manifest.py
+        '''
       }
     }
 
     stage('Unit Tests') {
       steps {
-        sh 'bash scripts/run_unit_tests.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/run_unit_tests.sh
+        '''
       }
       post {
         always {
@@ -37,7 +75,10 @@ pipeline {
 
     stage('Security Checks') {
       steps {
-        sh 'bash scripts/run_security_checks.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/run_security_checks.sh
+        '''
       }
       post {
         always {
@@ -66,7 +107,10 @@ pipeline {
         expression { env.AI_TYPE == 'llm_rag' }
       }
       steps {
-        sh 'bash scripts/run_model_eval.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/run_model_eval.sh
+        '''
       }
       post {
         always {
@@ -80,7 +124,10 @@ pipeline {
         expression { env.AI_TYPE == 'llm_rag' }
       }
       steps {
-        sh 'bash scripts/run_ai_security_tests.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/run_ai_security_tests.sh
+        '''
       }
       post {
         always {
@@ -97,7 +144,10 @@ pipeline {
 
     stage('Smoke Tests') {
       steps {
-        sh 'bash scripts/run_smoke_tests.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/run_smoke_tests.sh
+        '''
       }
       post {
         always {
@@ -116,8 +166,11 @@ pipeline {
 
     stage('Deploy Production') {
       steps {
-        sh 'bash scripts/deploy.sh production'
-        sh 'bash scripts/run_integration_tests.sh'
+        sh '''
+        . venv/bin/activate
+        bash scripts/deploy.sh production
+        bash scripts/run_integration_tests.sh
+        '''
       }
       post {
         always {
